@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Lights-on-Nobody-home-/',
+  base: '/Light off campus/',
 })
