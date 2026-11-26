@@ -1,8 +1,9 @@
 import React,{useEffect,useState}from'react';import{Routes,Route,Navigate,Link,useNavigate,useLocation}from'react-router-dom';import{Leaf,LayoutDashboard,FilePlus2,ClipboardList,Users,Building2,MapPin,ChartNoAxesCombined,Bell,LogOut,Menu,Lightbulb,Search,CheckCircle2,Clock3,AlertCircle,ArrowRight,ShieldCheck,Zap,Plus,X,ClipboardCheck,ScanSearch,Megaphone,Gauge,Sprout,CalendarCheck}from'lucide-react';import{ResponsiveContainer,BarChart,Bar,XAxis,YAxis,Tooltip,CartesianGrid}from'recharts';import api from './api';
 
-const API_ORIGIN = (
+const API_BASE_URL = (
   import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
-).replace(/\/api\/?$/, '')
+).replace(/\/+$/, '');
+const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 const fmt=d=>d?new Date(d).toLocaleString():'';const statusClass=s=>(s||'').toLowerCase().replaceAll(' ','-');
 function App(){const[user,setUser]=useState(null);const[ready,setReady]=useState(false);useEffect(()=>{if(localStorage.getItem('token'))api.get('/auth/me').then(r=>setUser(r.data)).catch(()=>localStorage.removeItem('token')).finally(()=>setReady(true));else setReady(true)},[]);const logout=()=>{localStorage.removeItem('token');setUser(null)};if(!ready)return <div className="loading-screen">Loading workspace…</div>;return <Routes><Route path="/" element={<Landing user={user}/>}/><Route path="/login" element={<Auth mode="login" onAuth={setUser}/>}/><Route path="/register" element={<Auth mode="register" onAuth={setUser}/>}/><Route path="/app/*" element={user?<Workspace user={user} logout={logout}/>:<Navigate to="/login" replace/>}/><Route path="*" element={<Navigate to="/"/>}/></Routes>}
 function Landing({user}){return <div className="landing landing-refresh">
